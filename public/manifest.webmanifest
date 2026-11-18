@@ -1,0 +1,13 @@
+{
+  "name": "Cojaunt",
+  "short_name": "Cojaunt",
+  "description": "Plans, not profiles.",
+  "start_url": "/discover",
+  "display": "standalone",
+  "background_color": "#faf6ef",
+  "theme_color": "#faf6ef",
+  "icons": [
+    { "src": "/favicon/light/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/favicon/light/android-chrome-512x512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

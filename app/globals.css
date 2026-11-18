@@ -1,0 +1,413 @@
+@import "tailwindcss";
+
+/* `dark:` follows the theme the member picked (see lib/theme.ts), not only the OS setting. */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  --color-paper: #faf6ef;
+  --color-surface: #ffffff;
+  --color-ink: #17241f;
+  --color-muted: #55625b;
+  --color-line: #e8e0d2;
+  --color-forest: #1f4d3f;
+  --color-forest-deep: #143429;
+  --color-forest-hover: #143429;
+  --color-forest-soft: #e2eee7;
+  --color-marigold: #eda02f;
+  --color-marigold-soft: #fcefd5;
+  --color-amber-ink: #85560a;
+  --color-spark: #b93a27;
+  --color-spark-soft: #fce5e0;
+  --color-plum: #6b3f87;
+  --color-plum-soft: #f0e7f6;
+  --color-danger: #c4261b;
+  --color-night: #101a16;
+  /* A deep green for large panels that carry white text. Same in both themes, so the text always has contrast. */
+  --color-band: #1c4737;
+}
+
+@theme inline {
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-fraunces), ui-serif, Georgia, serif;
+}
+
+@layer base {
+  html {
+    background: var(--color-paper);
+    color-scheme: light;
+    -webkit-tap-highlight-color: transparent;
+  }
+  /*
+   * Dark palette. Same token names, so every utility (bg-surface, text-ink…) switches with no
+   * per-component `dark:` classes. `forest` stays mid-tone so it works both as a button fill
+   * under white text and as text on dark surfaces.
+   */
+  [data-theme="dark"] {
+    color-scheme: dark;
+    --color-paper: #0f1613;
+    --color-surface: #17201c;
+    --color-ink: #e8eee9;
+    --color-muted: #9aa9a1;
+    --color-line: #2a3530;
+    /* Fill colour: white text on it stays above 4.5:1. Text uses a lighter shade, set below. */
+    --color-forest: #2e7a5e;
+    --color-forest-deep: #a8dcc3;
+    --color-forest-hover: #276a51;
+    --color-forest-soft: #1b3128;
+    --color-marigold: #f0a83a;
+    --color-marigold-soft: #3a2b12;
+    --color-amber-ink: #f3c983;
+    --color-spark: #c8432f;
+    --color-spark-soft: #3b1f19;
+    --color-plum: #7d52a0;
+    --color-plum-soft: #2b2036;
+    --color-danger: #c93a2e;
+    --color-night: #0a100d;
+  }
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-forest);
+    outline-offset: 2px;
+  }
+  button {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-height: 3rem;
+    padding: 0 1.375rem;
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+  }
+  .btn:active {
+    transform: scale(0.98);
+  }
+  .btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .btn-primary {
+    background: var(--color-forest);
+    color: #fff;
+    box-shadow: 0 10px 20px -12px rgb(31 77 63 / 0.9);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--color-forest-hover);
+  }
+  .btn-soft {
+    background: var(--color-forest-soft);
+    color: var(--color-forest-deep);
+  }
+  .btn-line {
+    border: 1px solid var(--color-line);
+    background: var(--color-surface);
+    color: var(--color-ink);
+  }
+  /* White button for green panels. Fixed colours, because theme-aware text turns pale in dark mode. */
+  .btn-light {
+    background: #ffffff;
+    color: #143429;
+  }
+  .btn-light:hover:not(:disabled) {
+    background: #eef5f1;
+  }
+  .btn-spark {
+    background: var(--color-spark);
+    color: #fff;
+  }
+  .btn-danger {
+    background: var(--color-danger);
+    color: #fff;
+  }
+  .btn-sm {
+    min-height: 2.25rem;
+    padding: 0 0.875rem;
+    font-size: 0.8125rem;
+  }
+  .card {
+    border: 1px solid var(--color-line);
+    border-radius: 1.25rem;
+    background: var(--color-surface);
+  }
+  .field {
+    width: 100%;
+    min-height: 3rem;
+    padding: 0.625rem 1rem;
+    border: 1px solid var(--color-line);
+    border-radius: 0.875rem;
+    background: var(--color-surface);
+    color: var(--color-ink);
+  }
+  .field::placeholder {
+    color: var(--color-muted);
+  }
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2.25rem;
+    padding: 0 0.875rem;
+    border: 1px solid var(--color-line);
+    border-radius: 999px;
+    background: var(--color-surface);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .chip[aria-pressed="true"],
+  .chip[aria-selected="true"] {
+    border-color: var(--color-ink);
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+  .sheet {
+    width: 100%;
+    max-width: 32rem;
+    max-height: 88dvh;
+    margin: auto auto 0;
+    padding: 0;
+    border: 0;
+    border-radius: 1.5rem 1.5rem 0 0;
+    background: var(--color-surface);
+    color: var(--color-ink);
+    /* The dialog only clips (so the scrollbar follows the rounded corners); .sheet-body scrolls. */
+    overflow: hidden;
+  }
+  .sheet-body {
+    max-height: 88dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+  /* Chromium/Safari: themed slim bar, no arrow buttons. Firefox has no arrows, so it gets the standard properties. */
+  .sheet-body::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+  .sheet-body::-webkit-scrollbar-button {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+  .sheet-body::-webkit-scrollbar-track {
+    background: transparent;
+    margin-block: 0.75rem;
+  }
+  .sheet-body::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: var(--color-line);
+  }
+  .sheet-body::-webkit-scrollbar-thumb:hover {
+    background: var(--color-muted);
+  }
+  @supports not selector(::-webkit-scrollbar) {
+    .sheet-body {
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-line) transparent;
+    }
+  }
+  .sheet::backdrop {
+    background: rgb(16 26 22 / 0.55);
+  }
+  @media (min-width: 48rem) {
+    .sheet {
+      margin: auto;
+      border-radius: 1.5rem;
+    }
+  }
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.625rem;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+  .eyebrow {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-muted);
+  }
+  .rise {
+    animation: rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+}
+
+/* Landing page: 3D stage, floating layers, marquee and scroll reveal. Pure CSS, no libraries. */
+@layer components {
+  .stage {
+    perspective: 1400px;
+  }
+  .stage-inner {
+    position: relative;
+    transform-style: preserve-3d;
+    transform: rotateX(var(--rx, 6deg)) rotateY(var(--ry, -12deg));
+    transition: transform 0.25s ease-out;
+  }
+  .layer {
+    transform: translateZ(var(--z, 0px));
+  }
+  .float {
+    animation: float var(--t, 6s) ease-in-out infinite;
+    animation-delay: var(--d, 0s);
+  }
+  .orbit {
+    animation: orbit 48s linear infinite;
+  }
+  .sway {
+    animation: sway 9s ease-in-out infinite;
+    transform-style: preserve-3d;
+  }
+  .marquee {
+    animation: marquee 48s linear infinite;
+  }
+  .marquee-wrap:hover .marquee {
+    animation-play-state: paused;
+  }
+  .blob {
+    animation: drift 18s ease-in-out infinite alternate;
+  }
+  .tilt {
+    transform-style: preserve-3d;
+    transform: perspective(900px) rotateX(var(--tx, 0deg)) rotateY(var(--ty, 0deg));
+    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+  }
+  .tilt-pop {
+    transform: translateZ(40px);
+  }
+  [data-reveal] {
+    transition: opacity 0.7s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+    transition-delay: var(--delay, 0s);
+  }
+  [data-reveal="hidden"] {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  /* Both ends are dark enough on the page background (light: forest to amber-ink; dark: mint to gold). */
+  .text-gradient {
+    background: linear-gradient(100deg, var(--grad-a, var(--color-forest)) 10%, var(--grad-b, var(--color-amber-ink)) 90%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -14px;
+  }
+}
+
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes sway {
+  0%,
+  100% {
+    transform: rotateY(-16deg) rotateX(4deg);
+  }
+  50% {
+    transform: rotateY(16deg) rotateX(-2deg);
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes drift {
+  to {
+    transform: translate(40px, -30px) scale(1.12);
+  }
+}
+
+/* Motion is decoration only: members who ask for less get a still page. */
+@media (prefers-reduced-motion: reduce) {
+  .float,
+  .orbit,
+  .sway,
+  .marquee,
+  .blob {
+    animation: none !important;
+  }
+  .stage-inner,
+  .tilt {
+    transition: none;
+  }
+  [data-reveal="hidden"] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/*
+ * On dark surfaces the mid-tone fills (forest, spark, plum, danger) are too dim to read as text, so text
+ * in those colours gets a lighter shade. Fills keep the darker value so white text on them stays above 4.5:1.
+ */
+@layer utilities {
+  [data-theme="dark"] {
+    --grad-a: #6cc39f;
+    --grad-b: #f0a83a;
+  }
+  [data-theme="dark"] :focus-visible {
+    outline-color: #6cc39f;
+  }
+  [data-theme="dark"] .text-forest {
+    color: #6cc39f;
+  }
+  [data-theme="dark"] .text-spark {
+    color: #f08a76;
+  }
+  [data-theme="dark"] .text-danger {
+    color: #ff8f84;
+  }
+  [data-theme="dark"] .text-plum {
+    color: #c9a6e6;
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@keyframes hold {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
